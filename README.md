@@ -4,7 +4,7 @@
 
 ## You can check out the app online at:
 
->*Please excuse the slow loading times as its on free hosting*
+>*Please excuse the slow loading time sometimes as its on free hosting*
 
 **https://kind-colden-830437.netlify.app/**
 
