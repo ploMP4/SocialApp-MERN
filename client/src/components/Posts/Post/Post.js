@@ -12,10 +12,10 @@ import {
 import moment from "moment";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Cancel';
+import SaveIcon from "@material-ui/icons/Save";
+import CancelIcon from "@material-ui/icons/Cancel";
 import { useDispatch } from "react-redux";
-import { deletePost, likePost } from "../../../actions/posts";
+import { deletePost, likePost, updatePost } from "../../../actions/posts";
 import Likes from "./Likes";
 
 const Post = ({ post }) => {
@@ -26,6 +26,14 @@ const Post = ({ post }) => {
   const [title, setTitle] = useState(post.title);
   const [message, setMessage] = useState(post.message);
   const user = JSON.parse(localStorage.getItem("profile"));
+
+  const updatePostHandler = () => {
+    post.title = title;
+    post.message = message;
+    post.tags = tags;
+    dispatch(updatePost(post._id, post));
+    setEditing(!editing);
+  };
 
   return (
     <Card className={classes.card}>
@@ -43,31 +51,49 @@ const Post = ({ post }) => {
 
       {editing ? (
         <>
-          <Typography variant="h6">Tags: </Typography>
-          {tags.map((tag, index) => (
-            <TextField
-              variant="outlined"
-              className={classes.editField} 
-              value={tag}
-              onChange={(e) =>
-                setTags([...tags.slice(0, index), e.target.value, ...tags.slice(index + 1)])
-              }
-            />
-          ))}
           <Typography variant="h6">Title: </Typography>
-          <TextField value={title} variant="outlined" className={classes.editField} onChange={(e) => setTitle(e.target.value)} />
+          <TextField
+            value={title}
+            variant="outlined"
+            className={classes.editField}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <Typography variant="h6">Message: </Typography>
-          <TextField value={message} variant="outlined" className={classes.editField} onChange={(e) => setMessage(e.target.value)} />
+          <TextField
+            value={message}
+            variant="outlined"
+            className={classes.editField}
+            onChange={(e) => setMessage(e.target.value)}
+          />
           <CardActions className={classes.cardActions}>
+            <Typography variant="h6">Tags: </Typography>
+            {tags.map((tag, index) => (
+              <TextField
+                variant="outlined"
+                className={classes.editField}
+                value={tag}
+                onChange={(e) =>
+                  setTags([
+                    ...tags.slice(0, index),
+                    e.target.value,
+                    ...tags.slice(index + 1),
+                  ])
+                }
+              />
+            ))}
             <Button
               color="primary"
               size="large"
-              onClick={() => setEditing(!editing)}
+              onClick={() => updatePostHandler()}
             >
               <SaveIcon fontSize="small" />
               Save
             </Button>
-            <Button color="secondary" size="large">
+            <Button
+              color="secondary"
+              size="large"
+              onClick={() => setEditing(!editing)}
+            >
               <CancelIcon fontSize="small" />
               Cancel
             </Button>
@@ -77,15 +103,15 @@ const Post = ({ post }) => {
         <>
           <div className={classes.details}>
             <Typography variant="body2" color="textSecondary">
-              {tags.map((tag) => `#${tag} `)}
+              {post.tags.map((tag) => `#${tag} `)}
             </Typography>
           </div>
           <Typography className={classes.title} variant="h5" gutterBottom>
-            {title}
+            {post.title}
           </Typography>
           <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
-              {message}
+              {post.message}
             </Typography>
           </CardContent>
 

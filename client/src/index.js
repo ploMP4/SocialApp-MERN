@@ -5,8 +5,11 @@ import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import reducers from "./reducers";
 import './index.css'
+import dotenv from 'dotenv';
 
 import App from "./App";
+
+dotenv.config()
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
