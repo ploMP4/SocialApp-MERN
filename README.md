@@ -1,1 +1,1 @@
-# SocialApp-MERN
+# Social Media WebApp
